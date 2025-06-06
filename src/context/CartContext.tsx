@@ -1,5 +1,5 @@
 "use client"
-import { createContext, useContext, useState, type ReactNode } from "react"
+import { createContext, useContext, useState, useEffect, type ReactNode } from "react"
 
 type CartItem = {
   id: number
@@ -19,6 +19,21 @@ const CartContext = createContext<CartContextType | undefined>(undefined)
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cartItems, setCartItems] = useState<CartItem[]>([])
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  // Carregar carrinho do localStorage na primeira vez (só no client)
+  useEffect(() => {
+    const data = localStorage.getItem("cartItems")
+    if (data) setCartItems(JSON.parse(data))
+    setIsLoaded(true)
+  }, [])
+
+  // Salvar carrinho sempre que cartItems mudar
+  useEffect(() => {
+    if (isLoaded) {
+      localStorage.setItem("cartItems", JSON.stringify(cartItems))
+    }
+  }, [cartItems, isLoaded])
 
   function addToCart(item: Omit<CartItem, "quantity">) {
     setCartItems((prev) => {
@@ -33,6 +48,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   function removeFromCart(id: number) {
     setCartItems((prev) => prev.filter((item) => item.id !== id))
   }
+
+  // Só renderiza os filhos quando carregou do localStorage
+  if (!isLoaded) return null
 
   return <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>{children}</CartContext.Provider>
 }

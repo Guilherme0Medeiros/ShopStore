@@ -1,8 +1,7 @@
 "use client"
 import { useCart } from "@/context/CartContext"
-import type React from "react"
-
-import { useEffect } from "react"
+import { useAuth } from "@/components/AuthProvider"
+import { useEffect, useState } from "react"
 
 type Props = {
   isOpen: boolean
@@ -11,6 +10,8 @@ type Props = {
 
 export default function CartSidebar({ isOpen, onClose }: Props) {
   const { cartItems, addToCart, removeFromCart } = useCart()
+  const { user } = useAuth()
+  const [error, setError] = useState("")
 
   const total = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)
 
@@ -25,7 +26,6 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
         onClose()
       }
     }
-
     document.addEventListener("keydown", handleEscape)
     return () => document.removeEventListener("keydown", handleEscape)
   }, [isOpen, onClose])
@@ -37,7 +37,6 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
     } else {
       document.body.style.overflow = "unset"
     }
-
     return () => {
       document.body.style.overflow = "unset"
     }
@@ -49,11 +48,9 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
         onClose()
       }
     }
-
     if (isOpen) {
       document.addEventListener("click", handleClickOutside)
     }
-
     return () => {
       document.removeEventListener("click", handleClickOutside)
     }
@@ -64,7 +61,6 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
     if (item && item.quantity === 1) {
       removeFromCart(id)
     } else if (item) {
-      // Implementação mais limpa para diminuir quantidade
       addToCart({ id, title: item.title, price: item.price, image: item.image })
       setTimeout(() => removeFromCart(id), 0)
     }
@@ -148,10 +144,18 @@ export default function CartSidebar({ isOpen, onClose }: Props) {
               <span>Total:</span>
               <span className="text-orange-600">R$ {total.toFixed(2)}</span>
             </div>
+            {error && (
+              <div className="text-red-500 mb-2 text-center text-sm">{error}</div>
+            )}
             <button
               onClick={() => {
-                alert("Compra finalizada!")
-                onClose()
+                if (!user) {
+                  setError("Você precisa estar logado para finalizar a compra!");
+                  return;
+                }
+                setError("");
+                onClose();
+                window.location.href = "/sucesso";
               }}
               className="w-full bg-orange-500 text-white py-3 rounded-lg hover:bg-orange-600 transition-colors font-semibold"
             >

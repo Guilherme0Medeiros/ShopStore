@@ -12,7 +12,7 @@ Entre as funcionalidades principais estão:
 
 - **Página inicial** com listagem de produtos (busca via API pública)
 - **Página de detalhes do produto** (rota dinâmica `/produtos/[id]`) com galeria, descrições, avaliações mockadas, variações de tamanho/cor e botão de adicionar ao carrinho
-- **Carrinho de compras** como barra lateral (off-canvas), com ajuste de quantidade, remoção e resumo dinâmico
+- **Carrinho de compras** como barra lateral , com ajuste de quantidade, remoção e resumo dinâmico
 - **Login/registro fake** (simulação de autenticação)
 - **Roteamento com App Router** (rotas dinâmicas e persistência de layout)
 - **Estilização moderna** usando Tailwind CSS e componentes ricos do NextUI (HeroUI)
@@ -47,4 +47,47 @@ npm run dev
 ```bash
 Deploy na Vercel: https://shop-store-red.vercel.app
 Repositório GitHub: https://github.com/Guilherme0Medeiros/ShopStore
+```
+
+
+```bash
+
+/shopstoree
+│
+└── src/
+    │
+    ├── app/
+    │   ├── layout.tsx            # Layout global
+    │   ├── page.tsx              # Página inicial
+    │   ├── loading.tsx           # Tela de loading global
+    │   ├── error.tsx             # Tela de erro global
+    │   ├── providers.tsx         # Providers globais (Auth, Cart, NextUI)
+    │   ├── globals.css           # Estilos globais (caso esteja aqui)
+    │   ├── favicon.ico           # Ícone do site
+    │   ├── login/
+    │   │   └── page.tsx          # Página de login/cadastro
+    │   ├── produtos/
+    │   │   └── [id]/
+    │   │       └── page.tsx      # Página de detalhes do produto
+    │   ├── carrinho/
+    │   │   └── page.tsx          # Página do carrinho
+    │   └── sucesso/
+    │       └── page.tsx          # Página de compra finalizada
+    │
+    ├── components/
+    │   ├── CartSidebar.tsx       # Barra lateral do carrinho
+    │   ├── ProductCard.tsx       # Card de produto para listagem
+    │   ├── ProductDetail.tsx     # Detalhes do produto
+    │   ├── Navbar.tsx            # Navegação principal
+    │   ├── AuthProvider.tsx      # Contexto/autenticação simulada
+    │   ├── AuthButton.tsx        # Botão de login/logout na navbar
+    │   ├── ImageGallery.tsx      # Galeria de imagens do produto
+    │   ├── ProductReviews.tsx    # Avaliações mockadas
+    │   ├── RelatedProducts.tsx   # Produtos relacionados
+    │
+    └── context/
+        └── CartContext.tsx       # Contexto do carrinho (com persistência)
+
+
+
 ```
