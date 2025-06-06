@@ -27,9 +27,9 @@ export default function ProductDetail({ product }: Props) {
   const [selectedColor, setSelectedColor] = useState("Preto");
   const [added, setAdded] = useState(false);
 
-  // Mock de tamanhos e cores
+  //Tamanhos e cores
   const sizes = ["P", "M", "G", "GG"];
-  const colors = ["Preto", "Branco", "Azul"];
+  const colors = ["Preto", "Verde", "Vermelho"];
 
   // Função de adicionar ao carrinho
   const handleAddToCart = () => {
