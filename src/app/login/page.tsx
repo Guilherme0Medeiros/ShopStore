@@ -156,12 +156,12 @@ export default function LoginPage() {
             <User className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            {isLogin ? "Bem-vindo de volta!" : "Criar conta"}
+            {isLogin ? " Seja Bem-vindo !" : "Criar conta"}
           </h1>
           <p className="text-gray-600 text-center mt-2">
             {isLogin
-              ? "Entre com suas credenciais para continuar"
-              : "Preencha os dados para criar sua conta e logar"}
+              ? "Acesse sua conta"
+              : "Crie sua nova conta "}
           </p>
         </CardHeader>
 
@@ -183,7 +183,7 @@ export default function LoginPage() {
                 name="name"
                 type="text"
                 label=""
-                placeholder="Seu nome completo"
+                placeholder="Seu nome"
                 value={formData.name}
                 onChange={handleInputChange}
                 startContent={<User className="w-4 h-4 text-gray-400" />}
@@ -201,7 +201,7 @@ export default function LoginPage() {
               name="email"
               type="email"
               label=""
-              placeholder="seu@email.com"
+              placeholder="Digite seu email"
               value={formData.email}
               onChange={handleInputChange}
               startContent={<Mail className="w-4 h-4 text-gray-400" />}
@@ -213,7 +213,7 @@ export default function LoginPage() {
               name="password"
               type={showPassword ? "text" : "password"}
               label=""
-              placeholder="Sua senha"
+              placeholder="Digite sua senha"
               value={formData.password}
               onChange={handleInputChange}
               startContent={<Lock className="w-4 h-4 text-gray-400" />}
@@ -244,7 +244,7 @@ export default function LoginPage() {
                 name="confirmPassword"
                 type={showConfirmPassword ? "text" : "password"}
                 label=""
-                placeholder="Confirme sua senha"
+                placeholder="Confirme a sua senha"
                 value={formData.confirmPassword}
                 onChange={handleInputChange}
                 startContent={<Lock className="w-4 h-4 text-gray-400" />}
