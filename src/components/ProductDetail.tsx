@@ -106,7 +106,7 @@ export default function ProductDetail({ product }: Props) {
           >
             {added ? "Adicionado!" : "Adicionar ao Carrinho"}
           </Button>
-          {/* Ações extras (curtir, compartilhar, etc) */}
+          {/* Ações extras */}
           <div className="flex gap-3 mt-4">
             <Button isIconOnly variant="light">
               <Heart size={20} />
@@ -116,16 +116,16 @@ export default function ProductDetail({ product }: Props) {
             </Button>
           </div>
 
-          {/* Tabs de detalhes */}
+          {/* detalhes */}
           <Tabs aria-label="Detalhes do produto" className="mt-6">
             <Tab key="specs" title="Especificações">
               <ul className="text-sm list-disc ml-6 mt-2">
                 <li>Categoria: {product.category}</li>
-                <li>Marca: Mock Brand</li>
+                <li>Tipo: Mock Brand</li>
                 <li>Tamanho: {selectedSize}</li>
+                <li>Origem: Nacional</li>
                 <li>Cor: {selectedColor}</li>
-                <li>Garantia: 3 meses</li>
-                {/* Adicione mais detalhes mockados */}
+                
               </ul>
             </Tab>
             <Tab
