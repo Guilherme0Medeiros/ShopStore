@@ -15,6 +15,12 @@ import {
 } from "@nextui-org/react";
 import { Eye, EyeOff, Mail, Lock, User, AlertCircle } from "lucide-react";
 
+// Tipo para usuário
+type UserType = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export default function LoginPage() {
   const { user, login } = useAuth();
@@ -43,11 +49,11 @@ export default function LoginPage() {
   };
 
   // Função para simular um "banco" de usuários
-  const getUsers = () => {
+  const getUsers = (): UserType[] => {
     if (typeof window === "undefined") return [];
     return JSON.parse(localStorage.getItem("users") || "[]");
   };
-  const setUsers = (users: any[]) => {
+  const setUsers = (users: UserType[]) => {
     localStorage.setItem("users", JSON.stringify(users));
   };
 
@@ -96,7 +102,7 @@ export default function LoginPage() {
         if (isLogin) {
           // LOGIN
           const userExists = users.find(
-            (u: any) =>
+            (u) =>
               u.email === formData.email && u.password === formData.password
           );
           if (!userExists) {
@@ -108,13 +114,13 @@ export default function LoginPage() {
           router.replace("/");
         } else {
           // REGISTRO
-          const emailExists = users.some((u: any) => u.email === formData.email);
+          const emailExists = users.some((u) => u.email === formData.email);
           if (emailExists) {
             setError("Este email já está cadastrado.");
             setIsLoading(false);
             return;
           }
-          const newUser = {
+          const newUser: UserType = {
             name: formData.name,
             email: formData.email,
             password: formData.password,
@@ -123,7 +129,7 @@ export default function LoginPage() {
           login(newUser.name, newUser.email);
           router.replace("/");
         }
-      } catch (err) {
+      } catch {
         setError("Erro ao processar. Tente novamente.");
       } finally {
         setIsLoading(false);
@@ -155,8 +161,7 @@ export default function LoginPage() {
           <p className="text-gray-600 text-center mt-2">
             {isLogin
               ? "Entre com suas credenciais para continuar"
-              : "Preencha os dados para criar sua conta e logar"
-              }
+              : "Preencha os dados para criar sua conta e logar"}
           </p>
         </CardHeader>
 

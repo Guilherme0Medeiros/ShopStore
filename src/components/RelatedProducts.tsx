@@ -49,7 +49,7 @@ const relatedProducts = [
   },
 ]
 
-export default function RelatedProducts({ currentProductId, category }: Props) {
+export default function RelatedProducts({ currentProductId}: Props) {
   const products = relatedProducts.filter((p) => p.id !== currentProductId)
 
   return (

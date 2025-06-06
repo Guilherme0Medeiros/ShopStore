@@ -1,8 +1,8 @@
 "use client";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { Button, Badge, Card, CardBody, Tabs, Tab } from "@nextui-org/react";
-import { Star, Heart, Share2, Truck, Shield, RotateCcw } from "lucide-react";
+import { Button, Badge, Card, Tabs, Tab } from "@nextui-org/react";
+import { Star, Heart, Share2 } from "lucide-react";
 import ImageGallery from "./ImageGallery";
 import ProductReviews from "./ProductReviews";
 
@@ -14,6 +14,7 @@ interface Product {
   category: string;
   image: string;
   rating: { rate: number; count: number };
+  
 }
 
 interface Props {
@@ -34,9 +35,6 @@ export default function ProductDetail({ product }: Props) {
   const handleAddToCart = () => {
     addToCart({
       ...product,
-      size: selectedSize,
-      color: selectedColor,
-      quantity: 1,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
