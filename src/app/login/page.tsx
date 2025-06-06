@@ -15,6 +15,7 @@ import {
 } from "@nextui-org/react";
 import { Eye, EyeOff, Mail, Lock, User, AlertCircle } from "lucide-react";
 
+
 export default function LoginPage() {
   const { user, login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);

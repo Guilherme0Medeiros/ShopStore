@@ -1,4 +1,11 @@
 import ProductCard from "@/components/ProductCard";
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+  title: "ShopStore",
+  description: "Uma loja virtual fictícia com Next.js",
+}
+
 
 type Produto = {
   id: number;

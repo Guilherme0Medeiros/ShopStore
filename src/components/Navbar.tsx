@@ -1,13 +1,19 @@
 "use client"
 import { useState } from "react"
+import type React from "react"
+
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { Input, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Badge } from "@nextui-org/react"
+import { Search, ShoppingCart, Menu, User, LogOut, Phone, Package } from "lucide-react"
 import CartSidebar from "@/components/CartSidebar"
 import { useCart } from "@/context/CartContext"
 import { useAuth } from "@/components/AuthProvider"
 
 export default function Navbar() {
   const [isCartOpen, setIsCartOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const { cartItems } = useCart()
   const { user, logout } = useAuth()
   const router = useRouter()
@@ -15,103 +21,229 @@ export default function Navbar() {
   // Calcular total de itens no carrinho
   const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
+  const categories = [
+    { name: "Camisetas", href: "/categoria/camisetas", icon: "👕" },
+    { name: "Games", href: "/categoria/games", icon: "🎮" },
+    { name: "Acessórios", href: "/categoria/acessorios", icon: "⌚" },
+    { name: "Animes", href: "/categoria/animes", icon: "🎌" },
+    { name: "Heróis", href: "/categoria/herois", icon: "🦸" },
+    { name: "Filmes", href: "/categoria/filmes", icon: "🎬" },
+    { name: "Colecionáveis", href: "/categoria/colecionaveis", icon: "🏆" },
+    { name: "Séries", href: "/categoria/series", icon: "📺" },
+    { name: "Animações", href: "/categoria/animacoes", icon: "🎨" },
+  ]
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/busca?q=${encodeURIComponent(searchQuery)}`)
+    }
+  }
+
   return (
     <>
-      <div className="bg-black text-white w-full">
+      <div className="bg-black text-white w-full shadow-2xl">
         {/* Top bar */}
-        <div className="text-sm py-2 border-b border-gray-800 flex justify-between px-6 items-center">
-          <div className="text-orange-500 font-bold text-xl">Shop Easyy</div>
-          <p className="text-orange-400">🚚 FRETE GRÁTIS em todo Brasil*</p>
-          <div className="flex gap-4 text-sm items-center">
-            <a href="#" className="hover:underline">
-              Fale Conosco
-            </a>
-            <a href="#" className="hover:underline">
-              Meus Pedidos
-            </a>
+        <div className="text-sm py-3 border-b border-gray-800">
+          <div className="container mx-auto px-4 flex justify-between items-center">
+            {/* Logo */}
+            <Link href="/" className="text-orange-500 font-bold text-xl hover:text-orange-400 transition-colors">
+              ShopStore
+            </Link>
 
-            {/* Login/Logout */}
-            {user ? (
-              <div className="flex items-center gap-2">
-                <span className="text-white">Olá, <span className="font-bold">{user.name}</span>!</span>
-                <button
-                  className="text-red-400 hover:text-red-500 font-semibold transition-colors"
-                  onClick={() => {
-                    logout()
-                    router.push("/")
-                  }}
-                >
-                  Sair
-                </button>
+            {/* Frete grátis - Hidden on mobile */}
+            <div className="hidden md:block">
+              <p className="text-orange-400 font-medium flex items-center gap-2">
+                <Package className="w-4 h-4" />
+                FRETE GRÁTIS em todo Brasil*
+              </p>
+            </div>
+
+            {/* Right menu */}
+            <div className="flex items-center gap-4">
+              {/* Desktop menu */}
+              <div className="hidden md:flex items-center gap-4 text-sm">
+                <Link href="/contato" className="hover:text-orange-400 transition-colors flex items-center gap-1">
+                  <Phone className="w-4 h-4" />
+                  Fale Conosco
+                </Link>
+                <Link href="/pedidos" className="hover:text-orange-400 transition-colors flex items-center gap-1">
+                  <Package className="w-4 h-4" />
+                  Meus Pedidos
+                </Link>
               </div>
-            ) : (
-              <button
-                className="text-white hover:text-orange-400 font-semibold transition-colors"
-                onClick={() => router.push("/login")}
-              >
-                Entrar
-              </button>
-            )}
 
-            {/* Botão do carrinho com badge */}
-            <button
-              onClick={() => setIsCartOpen(true)}
-              className="relative text-white hover:text-orange-400 font-bold text-lg transition-colors flex items-center gap-1"
-            >
-              🛒
-              {totalItems > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">
-                  {totalItems > 99 ? "99+" : totalItems}
-                </span>
+              {/* User menu */}
+              {user ? (
+                <Dropdown placement="bottom-end">
+                  <DropdownTrigger>
+                    <Button
+                      variant="light"
+                      className="text-white hover:text-orange-400 font-medium p-2 min-w-0 flex items-center gap-2"
+                      startContent={<User className="w-4 h-4" />}
+                    >
+                      Olá, <span className="font-bold">{user.name}</span>!
+                    </Button>
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label="User menu" className="bg-gray-900 border border-gray-700">
+                    <DropdownItem
+                      key="profile"
+                      className="text-white hover:bg-gray-800"
+                      startContent={<User className="w-4 h-4" />}
+                    >
+                      Meu Perfil
+                    </DropdownItem>
+                    <DropdownItem
+                      key="orders"
+                      className="text-white hover:bg-gray-800 md:hidden"
+                      startContent={<Package className="w-4 h-4" />}
+                    >
+                      Meus Pedidos
+                    </DropdownItem>
+                    <DropdownItem
+                      key="logout"
+                      className="text-red-400 hover:bg-gray-800"
+                      startContent={<LogOut className="w-4 h-4" />}
+                      onClick={() => {
+                        logout()
+                        router.push("/")
+                      }}
+                    >
+                      Sair
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              ) : (
+                <Button
+                  variant="light"
+                  className="text-white hover:text-orange-400 font-medium"
+                  startContent={<User className="w-4 h-4" />}
+                  onClick={() => router.push("/login")}
+                >
+                  Login
+                </Button>
               )}
-            </button>
+
+              {/* Cart button */}
+              <Badge
+                content={totalItems > 99 ? "99+" : totalItems}
+                color="danger"
+                isInvisible={totalItems === 0}
+                shape="circle"
+              >
+                <Button
+                  isIconOnly
+                  variant="light"
+                  className="text-white hover:text-orange-400 text-lg"
+                  onClick={() => setIsCartOpen(true)}
+                >
+                  <ShoppingCart className="w-5 h-5" />
+                </Button>
+              </Badge>
+
+              {/* Mobile menu button */}
+              <Button
+                isIconOnly
+                variant="light"
+                className="text-white hover:text-orange-400 md:hidden"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                <Menu className="w-5 h-5" />
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Pesquisar */}
-        <div className="py-4 px-6 flex justify-center">
-          <div className="relative w-full max-w-md">
-            <input
-              type="text"
-              placeholder="Pesquisar produtos..."
-              className="w-full pl-4 pr-4 py-2 rounded-lg border border-gray-700 bg-gray-900 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all"
-            />
+        {/* Search bar */}
+        <div className="py-4 px-4">
+          <div className="container mx-auto">
+            <form onSubmit={handleSearch} className="flex justify-center">
+              <div className="relative w-full max-w-lg">
+                <Input
+                  type="text"
+                  placeholder="Pesquisar produtos..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  startContent={<Search className="w-4 h-4 text-gray-400" />}
+                  classNames={{
+                    base: "w-full",
+                    mainWrapper: "w-full",
+                    input: "text-white placeholder:text-gray-400",
+                    inputWrapper:
+                      "bg-gray-900 border-gray-700 hover:border-orange-500 focus-within:!border-orange-500 transition-colors",
+                  }}
+                  size="lg"
+                />
+              </div>
+            </form>
           </div>
         </div>
 
-        {/* Menu de categorias */}
-        <nav className="px-6 py-4 flex gap-6 justify-center text-sm uppercase font-semibold tracking-wide border-b border-gray-900">
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Camisetas
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Games
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Acessórios
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Animes
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Heróis
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Filmes
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Colecionáveis
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Séries
-          </Link>
-          <Link href="#" className="hover:text-orange-400 transition-colors">
-            Animações
-          </Link>
+        {/* Categories menu - Desktop */}
+        <nav className="hidden md:block border-t border-gray-800 bg-gray-900/50">
+          <div className="container mx-auto px-4 py-3">
+            <div className="flex justify-center items-center gap-1 flex-wrap">
+              {categories.map((category) => (
+                <Link
+                  key={category.name}
+                  href={category.href}
+                  className="group px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-orange-500/20 transition-all duration-200 flex items-center gap-2"
+                >
+                  <span className="group-hover:scale-110 transition-transform duration-200">{category.icon}</span>
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </nav>
+
+        {/* Mobile menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-800 bg-gray-900">
+            <div className="container mx-auto px-4 py-4">
+              {/* Mobile categories */}
+              <div className="space-y-2 mb-4">
+                <h3 className="text-orange-400 font-semibold text-sm uppercase tracking-wide mb-3">Categorias</h3>
+                <div className="grid grid-cols-2 gap-2">
+                  {categories.map((category) => (
+                    <Link
+                      key={category.name}
+                      href={category.href}
+                      className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-orange-500/20 transition-all duration-200"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <span>{category.icon}</span>
+                      {category.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mobile links */}
+              <div className="border-t border-gray-800 pt-4 space-y-2">
+                <Link
+                  href="/contato"
+                  className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Phone className="w-4 h-4" />
+                  Fale Conosco
+                </Link>
+                <Link
+                  href="/pedidos"
+                  className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Package className="w-4 h-4" />
+                  Meus Pedidos
+                </Link>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Barra lateral do carrinho */}
+      {/* Cart sidebar */}
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   )
