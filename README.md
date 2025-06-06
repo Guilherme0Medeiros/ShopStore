@@ -45,6 +45,6 @@ npm run dev
 ## 🌐 Links importantes
 
 ```bash
-Deploy na Vercel: https://...
+Deploy na Vercel: https://shop-store-red.vercel.app
 Repositório GitHub: https://github.com/Guilherme0Medeiros/ShopStore
 ```
