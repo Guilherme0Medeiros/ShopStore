@@ -1,25 +1,41 @@
-"use client"
-import { useState } from "react"
-import type React from "react"
+"use client";
+import { useState } from "react";
+import type React from "react";
 
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Input, Button, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Badge } from "@nextui-org/react"
-import { Search, ShoppingCart, Menu, User, LogOut, Phone, Package } from "lucide-react"
-import CartSidebar from "@/components/CartSidebar"
-import { useCart } from "@/context/CartContext"
-import { useAuth } from "@/components/AuthProvider"
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import {
+  Input,
+  Button,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+  Badge,
+} from "@nextui-org/react";
+import {
+  Search,
+  ShoppingCart,
+  Menu,
+  User,
+  LogOut,
+  Phone,
+  ShoppingBag,
+} from "lucide-react";
+import CartSidebar from "@/components/CartSidebar";
+import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/components/AuthProvider";
 
 export default function Navbar() {
-  const [isCartOpen, setIsCartOpen] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState("")
-  const { cartItems } = useCart()
-  const { user, logout } = useAuth()
-  const router = useRouter()
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { cartItems } = useCart();
+  const { user, logout } = useAuth();
+  const router = useRouter();
 
   // Calcular total de itens no carrinho
-  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0)
+  const totalItems = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const categories = [
     { name: "Camisetas", href: "/categoria/camisetas", icon: "👕" },
@@ -31,14 +47,14 @@ export default function Navbar() {
     { name: "Colecionáveis", href: "/categoria/colecionaveis", icon: "🏆" },
     { name: "Séries", href: "/categoria/series", icon: "📺" },
     { name: "Animações", href: "/categoria/animacoes", icon: "🎨" },
-  ]
+  ];
 
   const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/busca?q=${encodeURIComponent(searchQuery)}`)
+      router.push(`/busca?q=${encodeURIComponent(searchQuery)}`);
     }
-  }
+  };
 
   return (
     <>
@@ -47,15 +63,15 @@ export default function Navbar() {
         <div className="text-sm py-3 border-b border-gray-800">
           <div className="container mx-auto px-4 flex justify-between items-center">
             {/* Logo */}
-            <Link href="/" className="text-orange-500 font-bold text-xl hover:text-orange-400 transition-colors">
+            <Link
+              href="/"
+              className="text-orange-500 font-bold text-xl hover:text-orange-400 transition-colors"
+            >
               ShopStore
             </Link>
 
-            {/* Frete grátis - Hidden on mobile */}
             <div className="hidden md:block">
               <p className="text-orange-400 font-medium flex items-center gap-2">
-                <Package className="w-4 h-4" />
-                FRETE GRÁTIS em todo Brasil*
               </p>
             </div>
 
@@ -63,14 +79,21 @@ export default function Navbar() {
             <div className="flex items-center gap-4">
               {/* Desktop menu */}
               <div className="hidden md:flex items-center gap-4 text-sm">
-                <Link href="/contato" className="hover:text-orange-400 transition-colors flex items-center gap-1">
+                <Link
+                  href="/contato"
+                  className="hover:text-orange-400 transition-colors flex items-center gap-1"
+                >
                   <Phone className="w-4 h-4" />
-                  Fale Conosco
+                  Contatos
                 </Link>
-                <Link href="/pedidos" className="hover:text-orange-400 transition-colors flex items-center gap-1">
-                  <Package className="w-4 h-4" />
-                  Meus Pedidos
+                <Link
+                  href="/pedidos"
+                  className="hover:text-orange-400 transition-colors flex items-center gap-1"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  Compras antigas
                 </Link>
+                jsx Copiar Editar
               </div>
 
               {/* User menu */}
@@ -85,7 +108,10 @@ export default function Navbar() {
                       Olá, <span className="font-bold">{user.name}</span>!
                     </Button>
                   </DropdownTrigger>
-                  <DropdownMenu aria-label="User menu" className="bg-gray-900 border border-gray-700">
+                  <DropdownMenu
+                    aria-label="User menu"
+                    className="bg-gray-900 border border-gray-700"
+                  >
                     <DropdownItem
                       key="profile"
                       className="text-white hover:bg-gray-800"
@@ -96,17 +122,17 @@ export default function Navbar() {
                     <DropdownItem
                       key="orders"
                       className="text-white hover:bg-gray-800 md:hidden"
-                      startContent={<Package className="w-4 h-4" />}
+                      startContent={<ShoppingBag className="w-4 h-4" />}
                     >
-                      Meus Pedidos
+                      Compras antigas
                     </DropdownItem>
                     <DropdownItem
                       key="logout"
                       className="text-red-400 hover:bg-gray-800"
                       startContent={<LogOut className="w-4 h-4" />}
                       onClick={() => {
-                        logout()
-                        router.push("/")
+                        logout();
+                        router.push("/");
                       }}
                     >
                       Sair
@@ -189,7 +215,9 @@ export default function Navbar() {
                   href={category.href}
                   className="group px-4 py-2 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-orange-500/20 transition-all duration-200 flex items-center gap-2"
                 >
-                  <span className="group-hover:scale-110 transition-transform duration-200">{category.icon}</span>
+                  <span className="group-hover:scale-110 transition-transform duration-200">
+                    {category.icon}
+                  </span>
                   {category.name}
                 </Link>
               ))}
@@ -203,7 +231,9 @@ export default function Navbar() {
             <div className="container mx-auto px-4 py-4">
               {/* Mobile categories */}
               <div className="space-y-2 mb-4">
-                <h3 className="text-orange-400 font-semibold text-sm uppercase tracking-wide mb-3">Categorias</h3>
+                <h3 className="text-orange-400 font-semibold text-sm uppercase tracking-wide mb-3">
+                  Categorias
+                </h3>
                 <div className="grid grid-cols-2 gap-2">
                   {categories.map((category) => (
                     <Link
@@ -227,15 +257,15 @@ export default function Navbar() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <Phone className="w-4 h-4" />
-                  Fale Conosco
+                  Contatos
                 </Link>
                 <Link
                   href="/pedidos"
                   className="flex items-center gap-2 p-3 rounded-lg text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-800 transition-colors"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <Package className="w-4 h-4" />
-                  Meus Pedidos
+                  <ShoppingBag className="w-4 h-4" />
+                  Compras antigas
                 </Link>
               </div>
             </div>
@@ -246,5 +276,5 @@ export default function Navbar() {
       {/* Cart sidebar */}
       <CartSidebar isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
-  )
+  );
 }
