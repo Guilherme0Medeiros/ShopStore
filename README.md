@@ -87,7 +87,13 @@ Repositório GitHub: https://github.com/Guilherme0Medeiros/ShopStore
     │
     └── context/
         └── CartContext.tsx       # Contexto do carrinho (com persistência)
-
-
-
 ```
+## IMAGENS 
+
+![prints readme1](https://github.com/user-attachments/assets/8527ea28-c10d-416e-bf16-dc05d50f1a4b)
+![prints readme2](https://github.com/user-attachments/assets/f9d8223d-643d-4cc6-8e68-08886b9650da)
+![prints readme3](https://github.com/user-attachments/assets/fa7bddff-438c-4859-bb37-c9218c109a39)
+![loginprint](https://github.com/user-attachments/assets/27c4ca65-e55b-4442-973e-542113f00ea2)
+![registroprint](https://github.com/user-attachments/assets/4b6892de-fd99-481a-9f2d-29f1790b7c71)
+
+
