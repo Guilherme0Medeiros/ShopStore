@@ -1,6 +1,6 @@
 # Projeto: Shop Store 🛒
 
-E-commerce fictício moderno desenvolvido com **Next.js** (App Router), **NextUI** e **Tailwind CSS**.  
+E-commerce fictício moderno desenvolvido com **Next.js** , **NextUI** e **Tailwind CSS**.  
 Permite navegação, visualização de produtos, simulação de carrinho e autenticação fake, simulando uma loja online real
 
 ---
