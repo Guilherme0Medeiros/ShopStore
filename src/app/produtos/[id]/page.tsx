@@ -1,12 +1,6 @@
 import ProductDetail from "@/components/ProductDetail";
 
-type ProductPageProps = {
-  params: {
-    id: string;
-  };
-};
-
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: { params: { id: string } }) {
   const res = await fetch(`https://fakestoreapi.com/products/${params.id}`);
   if (!res.ok) {
     return <div>Produto não encontrado</div>;
